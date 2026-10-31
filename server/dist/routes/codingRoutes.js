@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const codingController_js_1 = require("../controllers/codingController.js");
+const authMiddleware_js_1 = require("../middleware/authMiddleware.js");
+const validateMiddleware_js_1 = require("../middleware/validateMiddleware.js");
+const codingValidator_js_1 = require("../validators/codingValidator.js");
+const router = (0, express_1.Router)();
+router.get('/course/:courseId', authMiddleware_js_1.optionalAuth, codingController_js_1.CodingController.getChallengesForCourse);
+router.get('/:challengeId', authMiddleware_js_1.optionalAuth, codingController_js_1.CodingController.getChallengeById);
+router.post('/:challengeId/run', authMiddleware_js_1.requireAuth, (0, validateMiddleware_js_1.validate)(codingValidator_js_1.runCodeSchema), codingController_js_1.CodingController.runTests);
+router.post('/:challengeId/submit', authMiddleware_js_1.requireAuth, (0, validateMiddleware_js_1.validate)(codingValidator_js_1.submitCodeSchema), codingController_js_1.CodingController.submitChallenge);
+exports.default = router;

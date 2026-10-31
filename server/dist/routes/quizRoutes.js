@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const quizController_js_1 = require("../controllers/quizController.js");
+const authMiddleware_js_1 = require("../middleware/authMiddleware.js");
+const validateMiddleware_js_1 = require("../middleware/validateMiddleware.js");
+const quizValidator_js_1 = require("../validators/quizValidator.js");
+const router = (0, express_1.Router)();
+router.get('/course/:courseId', authMiddleware_js_1.optionalAuth, quizController_js_1.QuizController.getQuizzesForCourse);
+router.get('/:quizId', authMiddleware_js_1.optionalAuth, quizController_js_1.QuizController.getQuizById);
+router.post('/:quizId/submit', authMiddleware_js_1.requireAuth, (0, validateMiddleware_js_1.validate)(quizValidator_js_1.submitQuizSchema), quizController_js_1.QuizController.submitQuiz);
+exports.default = router;
